@@ -30,9 +30,9 @@ def partition_generator(arr: list, acc: list, count: int, num: int, max_num: int
     return acc
 
 #adds trailing 0's where necessary
-def partition(count: int, num: int, max_num: int) -> list:
+def partition(count: int, num: int) -> list:
     result = []
-    partition_generator(result, [], count, num, max_num)
+    partition_generator(result, [], count, num, num)
 
     for i in result:
         if len(i) != count:
@@ -44,8 +44,8 @@ def partition(count: int, num: int, max_num: int) -> list:
 #---------------------------------------------------------------------------------------------------
 
 numbers: list = []
-#numbers_str = input("enter numbers: ").split(" ")
-numbers_str: list = ["3", "2"]
+numbers_str = input("Enter numbers: ").split(" ")
+#numbers_str: list = ["9"]
 #numbers_str = ["1"]
 
 for i in range(0, len(numbers_str)):
@@ -54,9 +54,53 @@ for i in range(0, len(numbers_str)):
 free_tiles: int = board_size - (sum(numbers) + len(numbers) - 1)
 free_spaces: int = len(numbers) + 1
 
-print(free_spaces)
-print(free_tiles)
+arr = partition(free_spaces, free_tiles)
 
-arr = partition(free_spaces, free_tiles, free_tiles)
 print(arr)
 print(numbers)
+
+grid: list = [0] * 10
+numbers.append(0)
+
+if len(arr) > 0:
+    for i in arr:
+        index: int = 0
+        for j in range(0, len(i)):
+
+            if index == len(grid):
+                break
+
+            for k in range(index, index + i[j]):
+                grid[k] += 0
+            index += i[j]
+
+            if index == len(grid):
+                break
+
+            for k in range(index, index + numbers[j]):
+                grid[k] += 1
+            index += numbers[j]
+
+            if numbers[j] == 0 and j < len(i):
+                grid[index] += 0
+                index += 1 
+else:
+    index: int = 0
+    for j in range(0, len(numbers)):
+
+        for k in range(index, index + numbers[j]):
+            grid[k] += 1
+        index += numbers[j]
+
+        if index == len(grid):
+            break
+
+        grid[index] += 0
+        index += 1
+
+print(grid)
+print(len(arr))
+
+# index = 0 + 9 = 9 + 1 = 10
+# 0 1 2 3 4 5 6 7 8 9
+# 1 2 2 2 2 2 2 2 2 1
