@@ -64,43 +64,24 @@ numbers.append(0)
 
 if len(arr) > 0:
     for i in arr:
+
         index: int = 0
         for j in range(0, len(i)):
-
-            if index == len(grid):
-                break
 
             for k in range(index, index + i[j]):
                 grid[k] += 0
             index += i[j]
 
-            if index == len(grid):
-                break
+            if j != len(i) - 1 and j != 0:
+                grid[index] += 0
+                index += 1
 
             for k in range(index, index + numbers[j]):
                 grid[k] += 1
             index += numbers[j]
-
-            if numbers[j] == 0 and j < len(i):
-                grid[index] += 0
-                index += 1 
+            
 else:
-    index: int = 0
-    for j in range(0, len(numbers)):
-
-        for k in range(index, index + numbers[j]):
-            grid[k] += 1
-        index += numbers[j]
-
-        if index == len(grid):
-            break
-
-        grid[index] += 0
-        index += 1
+    grid = [1] * 10
 
 print(grid)
 print(len(arr))
-
-# index = 0 + 9 = 9 + 1 = 10
-# 0 1 2 3 4 5 6 7 8 9
-# 1 2 2 2 2 2 2 2 2 1
