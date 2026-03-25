@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "Sequence.h"
 
 #define True 1
 #define False 0
@@ -13,7 +14,8 @@
 int main(void);
 int countComponents(void);
 int createValidCombinations(int* grid, int val, int index, int depth);
-
+void test(void);
+void freeMemory(Sequence* sq);
 
 int main(void) {
     
@@ -31,15 +33,25 @@ int main(void) {
 
     free(grid);
 
+    test();
+
     return 0;
 }
 
-int createValidCombinations(int* grid, int val, int index, int depth) {
+void test() {
 
-    if (val == 0) { return 0; }
-
-    grid[depth * 10 + index] = val;
+    int* arr = (int*)malloc(sizeof(int) * 5);
+    *arr = 1; ++arr; *arr = 2; ++arr; *arr = 3; ++arr; *arr = -1; arr -= 3;
     
+    Sequence* sq = createSequence(arr, 5);
+    createCombinations(sq);
+    
+    freeMemory(sq);
+}
 
-    return 0;
+void freeMemory(Sequence* sq) {
+    
+    free(sq->combinations);
+    free(sq->values);
+    free(sq);
 }

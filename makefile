@@ -2,7 +2,7 @@ cc = gcc
 CFLAGS = -g -Wall
 TARGET = main
 OBJS = $(SRCS:.c=.o)
-SRCS = main.c 
+SRCS = main.c Sequence.c 
 
 all: $(TARGET)
 
