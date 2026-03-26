@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+
 #include "Sequence.h"
 
 Sequence* createSequence(int* values, int size) {
@@ -31,18 +33,32 @@ void createCombinations(Sequence* sq) {
     int freeSpaces = count + 1;
 }
 
-void generateCombination(Sequence* sq, int value, int index, int depth, int freeSpaces) {i
+void generateCombination(Sequence* sq, int value, int freeSpaces) {
 
-    if (depth == 0) {
+    int* masks = (int*)malloc(sizeof(int));
+    int index = 0;
+
+    for (int i = 0; i < pow(2, freeSpaces); ++i) {
         
-        while (*(sq->combinations + depth) != NULL) { ++depth; }
+        int bitCount;
 
-        *(sq->combinations + depth) = (int*)malloc(sizeof(int));
-    }
-    if (depth > freeSpaces) { (*(sq->combinations) + index) == -1; }
-    
-    for (int i = 0; i <= value; ++i) {
+        for (int j = 0; j < freeSpaces; ++j) {
+            
+            if (i % 2 == 1) { ++bitCount; }
+        }
+        if (bitCount != value) { continue; }
 
-        createCombinations(sq, value - i, ++index, depth);
+        int* spaceDistributions = (int*)malloc(sizeof(int));
+        int bitIndex = 0;
+
+        for (int j = 0; j < freeSpaces; ++j) {
+        
+            *spaceDistributions = i % 2;
+            ++spaceDistributions;
+        }
+        spaceDistributions -= freeSpaces;
+
     }
+
+    free(masks);
 }

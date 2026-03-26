@@ -44,8 +44,9 @@ void test() {
     *arr = 1; ++arr; *arr = 2; ++arr; *arr = 3; ++arr; *arr = -1; arr -= 3;
     
     Sequence* sq = createSequence(arr, 5);
-    createCombinations(sq);
-    
+    //createCombinations(sq);
+    generateCombination(sq, 5, 5);
+
     freeMemory(sq);
 }
 
