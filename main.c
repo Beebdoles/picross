@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "Sequence.h"
 
@@ -45,13 +46,18 @@ void test() {
     
     Sequence* sq = createSequence(arr, 5);
     //createCombinations(sq);
-    generateCombination(sq, 5, 5);
+    generateCombinations(sq, 1, 5);
+    printCombinations(sq);
 
     freeMemory(sq);
 }
 
 void freeMemory(Sequence* sq) {
     
+    for (int i = 0; i < pow(2, 5); ++i) {
+        
+        free(*(sq->combinations + i));
+    }
     free(sq->combinations);
     free(sq->values);
     free(sq);

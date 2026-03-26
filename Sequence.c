@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
 
 #include "Sequence.h"
 
@@ -10,55 +7,54 @@ Sequence* createSequence(int* values, int size) {
     if (!newSequence) { return NULL; }
 
     newSequence->values = values;
-    newSequence->combinations = (int**)malloc(sizeof(int*));
+    newSequence->freeSpaces = 0;
+    newSequence->combinations = (int**)malloc(sizeof(int*) * pow(2, 5));
+    newSequence->combinationsCount = 0;
     newSequence->size = size;
 
     return newSequence;
 }
 
-void createCombinations(Sequence* sq) {
-    
-    int sum = 0;
-    int count = 0;
-        
-    while (*(sq->values + count) != -1) {
-        
-        printf("%d ", *(sq->values + count));
-        ++count;
-        sum += *(sq->values + count);
-    }
-    printf("\n");
-
-    int freeBlocks = sq->size - (sum + count - 1);
-    int freeSpaces = count + 1;
-}
-
-void generateCombination(Sequence* sq, int value, int freeSpaces) {
-
-    int* masks = (int*)malloc(sizeof(int));
-    int index = 0;
+void generateCombinations(Sequence* sq, int value, int freeSpaces) {
 
     for (int i = 0; i < pow(2, freeSpaces); ++i) {
         
-        int bitCount;
+        int bitCount = 0;
+        int bitValue = i;
 
         for (int j = 0; j < freeSpaces; ++j) {
             
-            if (i % 2 == 1) { ++bitCount; }
+            if (bitValue % 2 == 1) { ++bitCount; }
+            bitValue = bitValue >> 1;
         }
         if (bitCount != value) { continue; }
 
-        int* spaceDistributions = (int*)malloc(sizeof(int));
+        int* spaceDistributions = (int*)malloc(sizeof(int) * freeSpaces);
         int bitIndex = 0;
+        bitValue = i;
 
         for (int j = 0; j < freeSpaces; ++j) {
         
-            *spaceDistributions = i % 2;
-            ++spaceDistributions;
+            *(spaceDistributions + bitIndex) = bitValue % 2;
+            bitValue = bitValue >> 1;
+            ++bitIndex;
         }
-        spaceDistributions -= freeSpaces;
-
+        *(sq->combinations + sq->combinationsCount) = spaceDistributions;
+        ++sq->combinationsCount;
+        sq->freeSpaces = freeSpaces;
     }
+}
 
-    free(masks);
+void printCombinations(Sequence* sq) {
+
+    int index = 0;
+
+    for (int i = 0; i < sq->combinationsCount; ++i) {
+
+        for (int j = 0; j < sq->freeSpaces; ++j) {
+        
+            printf("%d ", *(*(sq->combinations + i) + j));
+        }
+        printf("\n");
+    }
 }
