@@ -7,15 +7,20 @@
 
 typedef struct Sequence {
     int* values;
-    int freeSpaces;
+    int valueCount;
+    int valueSum;
+    int freeSum;
     int** combinations;
     int combinationsCount;
+    int combinationsMax;
     int size;
 } Sequence;
 
 Sequence* createSequence(int* values, int size);
 
-void generateCombinations(Sequence* sq, int value, int freeSpaces);
+void generateCombinations(Sequence* sq, int value, int index, int* acc);
+
 void printCombinations(Sequence* sq);
+void printProperties(Sequence* sq);
 
 #endif
