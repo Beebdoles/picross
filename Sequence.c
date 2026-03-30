@@ -24,6 +24,7 @@ Sequence* createSequence(int* values, int size) {
     newSequence->freeSum = size - (sum + count - 1);
     newSequence->combinationsMax = combinationsCalc;
     newSequence->combinations = (int**)malloc(sizeof(int*) * combinationsCalc);
+    newSequence->combinationValues = (int**)malloc(sizeof(int*) * combinationsCalc);
     newSequence->combinationsCount = 0;
     newSequence->size = size;
 
@@ -66,15 +67,68 @@ void generateCombinations(Sequence* sq, int value, int index, int* acc) {
     return;
 }
 
-void printCombinations(Sequence* sq) {
+void createCombinationValues(Sequence* sq) {
 
-    int index = 0;
+    int count = 0;
+
+    for (int i = 0; i < sq->combinationsCount; ++i) {
+    
+        int* combinationValue = (int*)malloc(sizeof(int) * sq->size);
+
+        for (int j = 0; j < sq->valueCount; ++j) {
+            
+            for (int k = 0; k < *(*(sq->combinations + i) + j); ++k) {
+            
+                *combinationValue = 0;
+                ++combinationValue;
+                //printf("0");
+            }
+            for (int k = 0; k < *(sq->values + j); ++k) {
+            
+                *combinationValue = 1;
+                ++combinationValue;
+                //printf("1");
+            }
+            if (j + 1 < sq->valueCount) { 
+                
+                *combinationValue = 0;
+                ++combinationValue;
+                //printf("0");
+            }
+        }
+        for (int j = 0; j < *(*(sq->combinations + i) + sq->valueCount); ++j) {
+
+            *combinationValue = 0;
+            ++combinationValue;
+            //printf("0");
+        }
+        //printf("\n");
+        //this is a bit fragile maybe, but it shoudl work?
+        combinationValue -= sq->size;
+        *(sq->combinationValues + count) = combinationValue;
+        ++count;
+    }
+}
+
+void printCombinations(Sequence* sq) {
 
     for (int i = 0; i < sq->combinationsCount; ++i) {
 
         for (int j = 0; j < sq->valueCount + 1; ++j) {
         
             printf("%d ", *(*(sq->combinations + i) + j));
+        }
+        printf("\n");
+    }
+}
+
+void printCombinationValues(Sequence* sq) {
+
+    for (int i = 0; i < sq->combinationsCount; ++i) {
+    
+        for (int j = 0; j < sq->size; ++j) {
+        
+            printf("%d ", *(*(sq->combinationValues + i) + j));
         }
         printf("\n");
     }
