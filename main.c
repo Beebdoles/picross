@@ -45,7 +45,7 @@ void test() {
     *arr = 1; ++arr; *arr = 1; ++arr; *arr = 1; ++arr; *arr = 1; ++arr; *arr = 1; ++arr; *arr = -1; arr -= 5;
 
     int* arr2 = (int*)malloc(sizeof(int) * (2 + 1));
-    *arr2 = 3; ++arr2; *arr2 = 3; ++arr2; *arr2 = -1; arr2 -= 2;
+    *arr2 = 4; ++arr2; *arr2 = 4; ++arr2; *arr2 = -1; arr2 -= 2;
     
     Sequence* sq = createSequence(arr2, 10);
     int* acc = (int*)malloc(sizeof(int) * (sq->valueCount + 1));
@@ -55,6 +55,7 @@ void test() {
     printCombinations(sq);
     createCombinationValues(sq);
     printCombinationValues(sq);
+    printSolution(sq);
 
     printf("free\n");
     free(acc);
@@ -72,5 +73,6 @@ void freeMemory(Sequence* sq) {
     free(sq->combinations);
     free(sq->combinationValues);
     free(sq->values);
+    free(sq->solution);
     free(sq);
 }

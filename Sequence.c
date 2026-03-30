@@ -25,6 +25,7 @@ Sequence* createSequence(int* values, int size) {
     newSequence->combinationsMax = combinationsCalc;
     newSequence->combinations = (int**)malloc(sizeof(int*) * combinationsCalc);
     newSequence->combinationValues = (int**)malloc(sizeof(int*) * combinationsCalc);
+    newSequence->solution = (int*)malloc(sizeof(int) * size);
     newSequence->combinationsCount = 0;
     newSequence->size = size;
 
@@ -108,6 +109,30 @@ void createCombinationValues(Sequence* sq) {
         *(sq->combinationValues + count) = combinationValue;
         ++count;
     }
+
+    for (int i = 0; i < sq->size; ++i) {
+    
+        for (int j = 0; j < sq->combinationsCount; ++j) {
+
+            *(sq->solution + i) += *(*(sq->combinationValues + j) + i);
+        }
+    }
+
+    for (int i = 0; i < sq->size; ++i) {
+
+        if (*(sq->solution + i) == sq->combinationsCount) { *(sq->solution + i) = 1; }
+        else { *(sq->solution + i) = 0; }
+    }
+}
+
+int generateSolution(Sequence* sq, int* invalids) {
+
+    if (invalids != NULL) {
+    
+        
+    }
+
+    return 0;
 }
 
 void printCombinations(Sequence* sq) {
@@ -132,6 +157,15 @@ void printCombinationValues(Sequence* sq) {
         }
         printf("\n");
     }
+}
+
+void printSolution(Sequence* sq) {
+
+    for (int i = 0; i < sq->size; ++i) {
+    
+        printf("%d ", *(sq->solution + i));
+    }
+    printf("\n");
 }
 
 void printProperties(Sequence* sq) {
