@@ -2,17 +2,6 @@
 #include "Sequence.h"
 
 
-static int nPr(int n, int r) {
-    
-    int top = 1;
-    int bottom = 1;
-
-    for (int i = 1; i <= n; ++i) { top *= i; }
-    for (int i = 1; i <= n - r; ++i) { bottom *= i; }
-    
-    return top / bottom;
-}
-
 Sequence* createSequence(int* values, int size) {
     
     Sequence* newSequence = malloc(sizeof(Sequence));
@@ -28,8 +17,7 @@ Sequence* createSequence(int* values, int size) {
         ++count;
     }
 
-    //int combinationsCalc = nPr(count + 1, size - (sum + count - 1));
-    int combinationsCalc = pow(2,12);
+    int combinationsCalc = pow(2,5);
 
     newSequence->valueCount = count;
     newSequence->valueSum = sum;
@@ -50,6 +38,14 @@ void appendCombination(Sequence* sq, int* combination, int size) {
     
     *(sq->combinations + sq->combinationsCount) = values;
     ++sq->combinationsCount;
+
+    if (sq->combinationsMax == sq->combinationsCount + 1) { 
+
+        sq->combinationsMax *= 2;
+        int** temp = realloc(sq->combinations, sq->combinationsCount * sizeof(int*));
+
+        if (temp != NULL) { sq->combinations = temp; }
+    }
 }
 
 void generateCombinations(Sequence* sq, int value, int index, int* acc) {

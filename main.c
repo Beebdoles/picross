@@ -47,7 +47,7 @@ void test() {
     int* arr2 = (int*)malloc(sizeof(int) * (2 + 1));
     *arr2 = 3; ++arr2; *arr2 = 3; ++arr2; *arr2 = -1; arr2 -= 2;
     
-    Sequence* sq = createSequence(arr2, 10);
+    Sequence* sq = createSequence(arr, 10);
     int* acc = (int*)malloc(sizeof(int) * (sq->valueCount + 1));
     printProperties(sq);
 
@@ -56,7 +56,7 @@ void test() {
 
     printf("free\n");
     free(acc);
-    free(arr);
+    free(arr2);
     freeMemory(sq);
 }
 
