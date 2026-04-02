@@ -108,6 +108,9 @@ void createCombinationValues(Sequence* sq) {
         combinationValue -= sq->size;
         *(sq->combinationValues + count) = combinationValue;
         ++count;
+        
+        for (int i = 0; i < sq->combinationsCount; ++i) { free(sq->combinations + i); }
+        free(sq->combinations);
     }
 
     for (int i = 0; i < sq->size; ++i) {
@@ -125,11 +128,37 @@ void createCombinationValues(Sequence* sq) {
     }
 }
 
-int generateSolution(Sequence* sq, int* invalids) {
+int generateSolution(Sequence* sq, int* invalids, int count) {
 
     if (invalids != NULL) {
     
+        for (int i = 0; i < sq->combinationsCount; ++i) {
+
+            if (*(sq->combinationValues + i) != NULL) {
         
+                for (int j = 0; j < count; ++i) {
+            
+                    *(*(sq->combinationValues + i) + *(invalids + count - 1)) = -1;
+                }
+            }
+        }
+    }
+
+    int valIndex = 0;
+
+    for (int i = 0; i < sq->size; ++i) { 
+
+        int sum = 0;
+
+        while (*(sq->solution + i) == 1) { ++sum; ++i; }
+            
+        if (sum == *(sq->values + valIndex)) { 
+            
+            if (i >= sq->size) { break; }
+
+            ++valIndex; 
+            *(sq->solution) = -1; 
+        }
     }
 
     return 0;

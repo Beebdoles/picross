@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define True 1
+#define False 0
+
 typedef struct Sequence {
     int* values;
     int valueCount;
