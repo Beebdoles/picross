@@ -19,15 +19,19 @@ typedef struct Sequence {
     int* solution;
 
     int combinationsCount;
+    int validCombinations;
     int combinationsMax;
     int size;
+
+    int invalidsCount;
+    int* invalids;
 } Sequence;
 
 Sequence* createSequence(int* values, int size);
 
 void generateCombinations(Sequence* sq, int value, int index, int* acc);
 void createCombinationValues(Sequence* sq);
-int generateSolution(Sequence* sq, int* invalids);
+int generateSolution(Sequence* sq, int* invalids, int count);
 
 void printCombinations(Sequence* sq);
 void printProperties(Sequence* sq);

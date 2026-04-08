@@ -26,7 +26,13 @@ Sequence* createSequence(int* values, int size) {
     newSequence->combinations = (int**)malloc(sizeof(int*) * combinationsCalc);
     newSequence->combinationValues = (int**)malloc(sizeof(int*) * combinationsCalc);
     newSequence->solution = (int*)malloc(sizeof(int) * size);
+    newSequence->invalidsCount = 0;
+    newSequence->invalids = (int*)malloc(sizeof(int) * 5);
+
+    for (int i = 0; i < size; ++i) { *(newSequence->solution + i) = 0; }
+
     newSequence->combinationsCount = 0;
+    newSequence->validCombinations = 0;
     newSequence->size = size;
 
     return newSequence;
@@ -40,6 +46,7 @@ void appendCombination(Sequence* sq, int* combination, int size) {
     
     *(sq->combinations + sq->combinationsCount) = values;
     ++sq->combinationsCount;
+    ++sq->validCombinations;
 
     if (sq->combinationsMax == sq->combinationsCount + 1) { 
 
@@ -84,12 +91,14 @@ void createCombinationValues(Sequence* sq) {
                 ++combinationValue;
                 //printf("0");
             }
+
             for (int k = 0; k < *(sq->values + j); ++k) {
             
                 *combinationValue = 1;
                 ++combinationValue;
                 //printf("1");
             }
+
             if (j + 1 < sq->valueCount) { 
                 
                 *combinationValue = 0;
@@ -108,9 +117,6 @@ void createCombinationValues(Sequence* sq) {
         combinationValue -= sq->size;
         *(sq->combinationValues + count) = combinationValue;
         ++count;
-        
-        for (int i = 0; i < sq->combinationsCount; ++i) { free(sq->combinations + i); }
-        free(sq->combinations);
     }
 
     for (int i = 0; i < sq->size; ++i) {
@@ -130,35 +136,36 @@ void createCombinationValues(Sequence* sq) {
 
 int generateSolution(Sequence* sq, int* invalids, int count) {
 
-    if (invalids != NULL) {
-    
-        for (int i = 0; i < sq->combinationsCount; ++i) {
+    for (int i = 0; i < sq->combinationsCount; ++i) {
+   
+        if (*(sq->combinationValues + i) == NULL) { continue; }
 
-            if (*(sq->combinationValues + i) != NULL) {
+        for (int j = 0; j < count; ++j) {
         
-                for (int j = 0; j < count; ++i) {
-            
-                    *(*(sq->combinationValues + i) + *(invalids + count - 1)) = -1;
-                }
+            if (*(*(sq->combinationValues + i) + *(invalids + j)) == 1) { 
+
+                free(*(sq->combinationValues + i));
+                *(sq->combinationValues + i) = NULL;
+                --sq->validCombinations;
             }
         }
     }
 
-    int valIndex = 0;
+    for (int i = 0; i < sq->size; ++i) {
 
-    for (int i = 0; i < sq->size; ++i) { 
-
-        int sum = 0;
-
-        while (*(sq->solution + i) == 1) { ++sum; ++i; }
+        *(sq->solution + i) = 0;
+    
+        for (int j = 0; j < sq->combinationsCount; ++j) {
             
-        if (sum == *(sq->values + valIndex)) { 
-            
-            if (i >= sq->size) { break; }
+            if (*(sq->combinationValues + j) == NULL) { continue; }
 
-            ++valIndex; 
-            *(sq->solution) = -1; 
+            *(sq->solution + i) += *(*(sq->combinationValues + j) + i);
         }
+
+        printf("%d\n", *(sq->solution + i));
+
+        if (*(sq->solution + i) == sq->validCombinations) { *(sq->solution + i) = 1; }
+        else { *(sq->solution + i) = 0; }
     }
 
     return 0;

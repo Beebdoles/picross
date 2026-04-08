@@ -53,6 +53,11 @@ void test() {
     createCombinationValues(sq);
     printCombinationValues(sq);
     printSolution(sq);
+    int* invalid = (int*)malloc(sizeof(int) * 1);
+    *invalid = 4;
+    generateSolution(sq, invalid, 1);
+    printSolution(sq);
+    printf("%d\n", sq->validCombinations);
 
     printf("free\n");
     free(acc);
