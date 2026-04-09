@@ -1,11 +1,5 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <math.h>
-
 #include "Sequence.h"
 #include "Grid.h"
-
 
 //other vars
 
@@ -49,23 +43,12 @@ void test() {
     printf("free\n");
     free(acc);
     free(arr);
-    freeMemory(sq);
+    free(arr2);
+    free(invalid);
+    freeSequence(sq);
 
     Grid* gd = createGrid(10, "");
     printGrid(gd);
     freeGrid(gd);
 }
 
-void freeMemory(Sequence* sq) {
-    
-    for (int i = 0; i < sq->combinationsCount; ++i) {
-        
-        free(*(sq->combinations + i));
-        free(*(sq->combinationValues + i));
-    }
-    free(sq->combinations);
-    free(sq->combinationValues);
-    free(sq->values);
-    free(sq->solution);
-    free(sq);
-}

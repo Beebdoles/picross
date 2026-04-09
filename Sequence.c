@@ -233,4 +233,9 @@ void freeSequence(Sequence* sq) {
 
         free(*(sq->combinations + i));
     }
+
+    free(sq->combinationValues);
+    free(sq->combinations);
+    free(sq);
+    sq = NULL;
 }
