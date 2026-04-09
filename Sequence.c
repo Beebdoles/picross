@@ -162,8 +162,6 @@ int generateSolution(Sequence* sq, int* invalids, int count) {
             *(sq->solution + i) += *(*(sq->combinationValues + j) + i);
         }
 
-        printf("%d\n", *(sq->solution + i));
-
         if (*(sq->solution + i) == sq->validCombinations) { *(sq->solution + i) = 1; }
         else { *(sq->solution + i) = 0; }
     }
@@ -219,4 +217,20 @@ void printProperties(Sequence* sq) {
         printf("%d ", *(sq->values + i));
     }
     printf("\n");
+}
+
+void freeSequence(Sequence* sq) {
+
+    free(sq->invalids);
+    free(sq->solution);
+
+    for (int i = 0; i < sq->combinationsCount; ++i) {
+    
+        if (*(sq->combinationValues + i) != NULL) { 
+
+            free(*(sq->combinationValues + i)); 
+        }
+
+        free(*(sq->combinations + i));
+    }
 }

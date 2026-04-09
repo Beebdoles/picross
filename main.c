@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "Sequence.h"
+#include "Grid.h"
 
 
 //other vars
@@ -17,20 +18,6 @@ void freeMemory(Sequence* sq);
 
 int main(void) {
     
-    printf("HI");
-
-    int* grid = malloc(10 * 10 * sizeof(int));
-
-    for (int i = 0; i < 10 * 10; ++i) {
-        if (i % 10 == 0) { printf("\n"); }
-        grid[i] = i;
-        printf("%d ", grid[i]);
-        if (i < 10) { printf(" "); }
-    }
-    printf("\n");
-
-    free(grid);
-
     test();
 
     return 0;
@@ -63,6 +50,10 @@ void test() {
     free(acc);
     free(arr);
     freeMemory(sq);
+
+    Grid* gd = createGrid(10, "");
+    printGrid(gd);
+    freeGrid(gd);
 }
 
 void freeMemory(Sequence* sq) {

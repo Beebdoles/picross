@@ -37,5 +37,6 @@ void printCombinations(Sequence* sq);
 void printProperties(Sequence* sq);
 void printCombinationValues(Sequence* sq);
 void printSolution(Sequence* sq);
+void freeSequence(Sequence* sq);
 
 #endif
