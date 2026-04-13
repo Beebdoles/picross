@@ -8,13 +8,78 @@ int main(void);
 int countComponents(void);
 int createValidCombinations(int* grid, int val, int index, int depth);
 void test(void);
+void parse(void);
 void freeMemory(Sequence* sq);
 
 int main(void) {
     
-    test();
+    //test();
+    parse();
 
     return 0;
+}
+
+void parse() {
+
+    char input[500];
+    fgets(input, 500 - 1, stdin);
+    input[499] = '\0';
+    printf("%s\n", input);
+
+
+
+    int** vals = (int**)malloc(sizeof(int*) * 10);
+    int j, k, jMax, kMax = 0;
+    int prevWhitespace = 1; 
+    char val[3]; val[0] = '\0'; val[1] = '\0'; val[2] = '\0';
+    int index = 0;
+
+    for (int i = 0; i < 500 - 1; ++i) {
+   
+        if (input[i] == '\0') { break; }
+
+        printf("element: %c\n", input[i]);
+
+        if (input[i] == ' ' && prevWhitespace == 0) {  
+
+            printf("here1\n");
+            prevWhitespace = 1;
+            printf("%d\n", atoi(val));
+            *(*(vals + j) + k) = atoi(val);
+            index = 0;
+            printf("here1.5\n");
+            val[0] = 0; val[1] = 0;
+            prevWhitespace = 1;
+            ++k;
+            printf("here2\n");
+        }
+        else if (input[i] == '|') {
+        
+            prevWhitespace = 1;
+            *(*(vals + j) + k + 1) = -1;
+            ++j;
+            ++jMax;
+            if (kMax < k) { kMax = k; }
+            k = 0;
+        }
+        else {
+            val[index] = input[i];
+            prevWhitespace = 0;
+            ++index;
+        }
+    }
+
+    for (int i = 0; i < jMax; ++i) {
+
+        int currVal = 0;
+
+        while (*(*(vals + i) + currVal) != -1) {
+        
+            printf("%d ", *(*(vals + i) + currVal));
+            ++currVal;
+        }
+        printf("\n");
+    }
 }
 
 void test() {
