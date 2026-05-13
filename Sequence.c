@@ -17,7 +17,7 @@ Sequence* createSequence(int* values, int size) {
         ++count;
     }
 
-    int combinationsCalc = pow(2,5);
+    int combinationsCalc = pow(2,10);
 
     newSequence->valueCount = count;
     newSequence->valueSum = sum;
@@ -142,11 +142,12 @@ int generateSolution(Sequence* sq, int* invalids, int count) {
 
         for (int j = 0; j < count; ++j) {
         
-            if (*(*(sq->combinationValues + i) + *(invalids + j)) == 1) { 
+            if (*(*(sq->combinationValues + i) + *(invalids + j)) == 1) {
 
                 free(*(sq->combinationValues + i));
                 *(sq->combinationValues + i) = NULL;
                 --sq->validCombinations;
+                break;
             }
         }
     }
