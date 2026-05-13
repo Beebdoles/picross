@@ -53,27 +53,23 @@ void parse() {
     fgets(inputSize, 100, stdin);
     sscanf(inputSize, "%d", &size);
 
-    printf("%d\n", size);
+    int** topNums = (int**)malloc(sizeof(int*) * size);
+    int** bottomNums = (int**)malloc(sizeof(int*) * size);
+
+    for (int i = 0; i < size; ++i) { 
+
+        *(topNums + i) = (int*)malloc(sizeof(int) * (size / 2 + 1 + (size % 2)));
+        *(bottomNums + i) = (int*)malloc(sizeof(int) * (size / 2 + 1 + (size % 2)));
+    }
+
     
     printf("Enter top numbers, delimited by '|': ");
     char inputTopNums[500];
-    int** topNums = (int**)malloc(sizeof(int*) * size);
-    
-    for (int i = 0; i < size; ++i) { 
-
-        *(topNums + i) = (int*)malloc(sizeof(int) * (size / 2 + 1 + (size % 2))); 
-    }
-
     fgets(inputTopNums, 500 - 1, stdin);
     
-    printf("%s\n", inputTopNums);
-
     printf("Enter bottom numbers, delimited by '|': ");
     char inputBottomNums[500];
-    int** bottomNums = (int**)malloc(sizeof(int*) * size);
     fgets(inputBottomNums, 500 - 1, stdin);
-
-    printf("%s\n", inputBottomNums);
 
     //parse inputs here
 
@@ -82,15 +78,13 @@ void parse() {
     int prevWhitespace = False;
 
     for (int i = 0; inputTopNums[i] != '\0' && i < 500; ++i) {
-    
-        printf("%c, %d\n", inputTopNums[i], inputTopNums[i]);
 
         //if whitespace
         if (inputTopNums[i] == 32 && !prevWhitespace) {
         
-            value -= length; memset(value, '\0', length);
+            value -= length;
             *(*(topNums + section) + valIndex) = atoi(value);
-            length = 0;
+            memset(value, '\0', length); length = 0;
             ++valIndex;
             prevWhitespace = True;
         }
@@ -131,24 +125,94 @@ void parse() {
         }
     }
 
-    for (int i = 0; i < section; ++i) {
+    memset(value, '\0', 4);
+    section = 0; valIndex = 0; length = 0;
+    prevWhitespace = False;
+
+    for (int i = 0; inputBottomNums[i] != '\0' && i < 500; ++i) {
+
+        //if whitespace
+        if (inputBottomNums[i] == 32 && !prevWhitespace) {
+        
+            value -= length;
+            *(*(bottomNums + section) + valIndex) = atoi(value);
+            memset(value, '\0', length); length = 0;
+            ++valIndex;
+            prevWhitespace = True;
+        }
+
+        //if pipe
+        else if (inputBottomNums[i] == 124) {
+        
+            *(*(bottomNums + section) + valIndex) = -1;
+            valIndex = 0;
+            value -= length; memset(value, '\0', length);
+            prevWhitespace = True;
+            ++section;
+            length = 0;
+        }
+
+        //if normal
+        else if (inputBottomNums[i] >= 48 && inputBottomNums[i] <= 57) {
+            
+            *value = inputBottomNums[i];
+            ++value;
+            ++length;
+            prevWhitespace = False;
+        }
+
+        //newline, combine section + newval
+        else if (inputBottomNums[i] == 10) {
+        
+            value -= length;
+            *(*(bottomNums + section) + valIndex) = atoi(value);
+            memset(value, '\0', length);
+            length = 0;
+            ++valIndex;
+            
+            *(*(bottomNums + section) + valIndex) = -1;
+            valIndex = 0;
+            prevWhitespace = True;
+            ++section;
+        }
+    }
+
+    printf("\n");
+    printf("Tops:\n");
+
+    for (int i = 0; i < size; ++i) {
     
         int j = 0;
         
-        while (*(*(topNums + i) + j) != -1) {
+        while (*(*(topNums + i) + j) != -1 && j < size) {
         
-            printf("%d", *(*(topNums + i) + j));
+            printf("%d ", *(*(topNums + i) + j));
             ++j;
         }
 
         printf("\n");
     }
 
+    printf("\nBottoms:\n");
+
+    for (int i = 0; i < size; ++i) {
+    
+        int j = 0;
+
+        while (*(*(bottomNums + i) + j) != -1 && j < size) {
+        
+            printf("%d ", *(*(bottomNums + i) + j));
+            ++j;
+        }
+
+        printf("\n");
+    }
 
     //free
-
-    free(topNums); free(bottomNums);
+    
     free(value);
+    for (int i = 0; i < size; ++i) { free(*(topNums + i)); free(*(bottomNums + i)); }
+    free(topNums); free(bottomNums);
 
 }
 
