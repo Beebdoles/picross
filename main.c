@@ -20,7 +20,7 @@ int main(void) {
     char* inputTopNums = (char*)malloc(sizeof(char) * 500);
     char* inputBottomNums = (char*)malloc(sizeof(char) * 500);
 
-    if (readInput(&size, inputTopNums, inputBottomNums) == 1) { return 1; };            //i love memory leak
+    if (readInput(&size, inputTopNums, inputBottomNums) == 1) { return 1; };                                //i love memory leak
 
     int** topNums = (int**)malloc(sizeof(int*) * size);
     int** bottomNums = (int**)malloc(sizeof(int*) * size);
@@ -95,8 +95,14 @@ int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* 
         if ((*(inputTopNums + i) == 32 && prevWhitespace == False) || *(inputTopNums + i) == 59 || *(inputTopNums + i) == 10) {
         
             value -= length;
-            *(*(topNums + section) + valIndex) = atoi(value);                           //safety write val + sentinel
-            *(*(topNums + section) + valIndex + 1) = -1;                    
+
+            //dont write multiple 0's
+            if (atoi(value) != 0 || (atoi(value) == 0 && valIndex == 0)) {
+
+                *(*(topNums + section) + valIndex) = atoi(value);                       //safety write val + sentinel
+                *(*(topNums + section) + valIndex + 1) = -1;                    
+            }
+
             memset(value, '\0', 4); length = 0;
             ++valIndex;
             prevWhitespace = True;
@@ -143,8 +149,14 @@ int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* 
         if ((*(inputBottomNums + i) == 32 && prevWhitespace == False) || *(inputBottomNums + i) == 59 || *(inputBottomNums + i) == 10) {
         
             value -= length;
-            *(*(bottomNums + section) + valIndex) = atoi(value);                           //safety write val + sentinel
-            *(*(bottomNums + section) + valIndex + 1) = -1;                    
+
+            //dont write multiple 0'
+            if (atoi(value) != 0 || (atoi(value) == 0 && valIndex == 0)) {
+                
+                *(*(bottomNums + section) + valIndex) = atoi(value);                           //safety write val + sentinel
+                *(*(bottomNums + section) + valIndex + 1) = -1;                    
+            }
+            
             memset(value, '\0', 4); length = 0;
             ++valIndex;
             prevWhitespace = True;
