@@ -64,10 +64,10 @@ int readInput(int* size, char* inputTopNums, char* inputBottomNums) {
     fgets(inputSize, 100, stdin);
     sscanf(inputSize, "%d", size);
 
-    printf("Enter top numbers, delimited by '|': ");
+    printf("Enter top numbers, delimited by ';': ");
     fgets(inputTopNums, 500 - 1, stdin);
     
-    printf("Enter bottom numbers, delimited by '|': ");
+    printf("Enter bottom numbers, delimited by ';': ");
     fgets(inputBottomNums, 500 - 1, stdin);
 
     return 0;
@@ -88,7 +88,8 @@ int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* 
     for (int i = 0; *(inputTopNums + i) != '\0' && i < 500; ++i) {
    
         if (valIndex > (*size / 2 + 1 + (*size % 2))) { printf("Too many blocks in section\n"); return 1; }
-        if (length > 3) { printf("Digit too large ( > 3)\n"); return 1; }
+        if (length > 3) { printf("Error: Digit too large ( > 3)\n"); return 1; }
+        if (section >= *size) { printf("Error: Too many sections\n"); return 1; }
 
         //write a value if whitespace or semicolon
         if ((*(inputTopNums + i) == 32 && prevWhitespace == False) || *(inputTopNums + i) == 59 || *(inputTopNums + i) == 10) {
@@ -109,6 +110,9 @@ int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* 
             if (*(inputTopNums + i) == 10) {
             
                 ++section;
+                
+                if (section != *size) { printf("Error: Not enough sections inputted\n"); return 1; }
+
                 break;
             }
         }
@@ -123,7 +127,7 @@ int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* 
         }
     }
 
-    if (section > *size) { printf("Too many sections\n"); return 1; };
+    if (section > *size) { printf("Error: Too many sections\n"); return 1; };
 
     memset(value, '\0', 4);
     section = 0; valIndex = 0; length = 0;
@@ -131,8 +135,9 @@ int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* 
 
     for (int i = 0; *(inputBottomNums + i) != '\0' && i < 500; ++i) {
     
-        if (valIndex > (*size / 2 + 1 + (*size % 2))) { printf("Too many blocks in section\n"); return 1; }
-        if (length > 3) { printf("Digit too large ( > 3)\n"); return 1; }
+        if (valIndex > (*size / 2 + 1 + (*size % 2))) { printf("Error: Too many blocks in section\n"); return 1; }
+        if (length > 3) { printf("Error: Digit too large ( > 3)\n"); return 1; }
+        if (section >= *size) { printf("Error: Too many sections\n"); return 1; }
 
         //write a value if whitespace or semicolon
         if ((*(inputBottomNums + i) == 32 && prevWhitespace == False) || *(inputBottomNums + i) == 59 || *(inputBottomNums + i) == 10) {
@@ -153,6 +158,9 @@ int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* 
             if (*(inputBottomNums + i) == 10) {
             
                 ++section;
+
+                if (section != *size) { printf("Error: not enough sections inputted\n"); return 1; }
+
                 break;
             }
         }
@@ -167,7 +175,7 @@ int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* 
         }
     }
 
-    if (section > *size) { printf("Too many sections\n"); return 1; };
+    if (section > *size) { printf("Error: Too many sections\n"); return 1; };
 
     printf("\n");
     printf("Tops:\n");
