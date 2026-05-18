@@ -12,6 +12,7 @@ void test(void);
 int run(void);
 int readInput(int* size, char* inputTopNums, char* inputBottomNums);
 int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* inputBottomNums);
+int initSolver(int** topNums, int** bottomNums, int* size);
 void freeMemory(Sequence* sq);
 
 int main(void) {
@@ -225,6 +226,11 @@ int parse(int* size, int** topNums, int** bottomNums, char* inputTopNums, char* 
     return 0;
 }
 
+int initSolver(int** topNums, int** bottomNums, int* size) {
+
+    return 0;
+}
+
 void test() {
 
     int* arr = (int*)malloc(sizeof(int) * 6);
@@ -255,8 +261,8 @@ void test() {
     free(invalid);
     freeSequence(sq);
 
-    Grid* gd = createGrid(10, "");
-    printGrid(gd);
-    freeGrid(gd);
+    //Grid* gd = createGrid(10, "");
+    //printGrid(gd);
+    //freeGrid(gd);
 }
 

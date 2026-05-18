@@ -17,7 +17,7 @@ Sequence* createSequence(int* values, int size) {
         ++count;
     }
 
-    int combinationsCalc = pow(2,10);
+    int combinationsCalc = pow(2, 5);
 
     newSequence->valueCount = count;
     newSequence->valueSum = sum;
@@ -51,9 +51,7 @@ void appendCombination(Sequence* sq, int* combination, int size) {
     if (sq->combinationsMax == sq->combinationsCount + 1) { 
 
         sq->combinationsMax *= 2;
-        int** temp = realloc(sq->combinations, sq->combinationsCount * sizeof(int*));
-
-        if (temp != NULL) { sq->combinations = temp; }
+        sq->combinations = realloc(sq->combinations, sq->combinationsCount * sizeof(int*));
     }
 }
 
@@ -165,6 +163,36 @@ int generateSolution(Sequence* sq, int* invalids, int count) {
 
         if (*(sq->solution + i) == sq->validCombinations) { *(sq->solution + i) = 1; }
         else { *(sq->solution + i) = 0; }
+    }
+
+    return 0;
+}
+
+int filter(Sequence* sq, int invalid) {
+
+    for (int i = 0; i < sq->combinationsCount; ++i) {
+    
+        //free combination vals that have valids in invalid spaces
+        if (*(sq->combinationValues + i) != NULL && *(*(sq->combinationValues + i) + invalid) == 1) {
+        
+            --sq->validCombinations;
+            free(*(sq->combinationValues + i)); *(sq->combinationValues + i) = NULL;
+        }
+    }
+
+    //regenerate solution
+    for (int i = 0; i < sq->size; ++i) {
+    
+        *(sq->solution + i) = 0;
+
+        for (int j = 0; j < sq->combinationsCount; ++j) {
+        
+            if (*(sq->combinationValues + j) == NULL) { continue; }
+
+            *(sq->solution + i) += *(*(sq->combinationValues + j) + i);
+        }
+
+        *(sq->solution) = (*(sq->solution) == sq->validCombinations);
     }
 
     return 0;

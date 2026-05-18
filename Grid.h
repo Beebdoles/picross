@@ -13,7 +13,7 @@ typedef struct Grid {
     int size;
 } Grid;
 
-Grid* createGrid(int size, char* vals);
+Grid* createGrid(int** topNums, int** bottomNums, int* size);
 void solveGrid(Grid* grid);
 
 void printGrid(Grid* grid);

@@ -32,6 +32,7 @@ Sequence* createSequence(int* values, int size);
 void generateCombinations(Sequence* sq, int value, int index, int* acc);
 void createCombinationValues(Sequence* sq);
 int generateSolution(Sequence* sq, int* invalids, int count);
+int filter(Sequence* sq, int invalid);
 
 void printCombinations(Sequence* sq);
 void printProperties(Sequence* sq);

@@ -1,15 +1,12 @@
 #include "Grid.h"
 
-Grid* createGrid(int size, char* vals) {
+Grid* createGrid(int** topNums, int** bottomNums, int* size) {
 
    Grid* newGrid = (Grid*)malloc(sizeof(Grid));
    if (!newGrid) { return NULL; }
 
-    newGrid->size = size;
-    newGrid->grid = (int*)malloc(sizeof(int) * size * size);
-    newGrid->sequences = (Sequence**)malloc(sizeof(Sequence*) * size * 2);
+    newGrid->size = *size;
 
-    for (int i = 0; i < size * size; ++i) { *(newGrid->grid + i) = i; }
 
    return newGrid;
 }
